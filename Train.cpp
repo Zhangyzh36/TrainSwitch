@@ -2,7 +2,6 @@
 
 void instructions()
 {
-
 }
 
 bool getCommand()
