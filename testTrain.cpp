@@ -6,6 +6,7 @@ int main()
 	while (getCommand()) {
 		Train t;
 		t.switchTrain();
+		t.print();
 	}
 
 	return 0;
