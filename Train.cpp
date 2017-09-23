@@ -18,7 +18,6 @@ Train::Train()
 void Train::switchTrain()
 {
 	int index;
-
 	while ( cur < size) {
 		
 		if ( isCarToBeOut() ) {
