@@ -8,7 +8,7 @@ using namespace std;
 
 //输出初始提示信息
 void instructions();
-//s:开始或继续调度，返回true； q:结束调度程序，返回false(需检查输入合法性)
+//s:开始或继续调度，返回true； q:结束调度程序,返回false(需检查输入合法性) 
 bool getCommand();
 
 class Train {
