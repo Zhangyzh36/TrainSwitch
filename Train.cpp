@@ -12,10 +12,37 @@ bool getCommand()
 
 Train::Train()
 {
-	
+
 }
 
 void Train::switchTrain()
+{
+	int index;
+
+	while ( cur < size) {
+		
+		if ( isCarToBeOut() ) {
+			popFrom(-1);
+			
+			while ( (index = carPopedFrom()) != -1 ) {
+				popFrom(index);
+			}
+
+		}
+		else {
+			
+			if ( (index = carPushedIn()) == -1 )
+				index = createNewStack();
+			
+			pushTo(index);
+		}
+
+		cur++;
+	}
+
+}
+
+void Train::print() const
 {
 
 }
@@ -55,7 +82,7 @@ int Train::carPushedIn() const
 
 }
 
-void Train::createNewStack()
+int Train::createNewStack()
 {
 
 }

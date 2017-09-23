@@ -19,6 +19,8 @@ public:
 	Train();
 	//调度函数
 	void switchTrain();
+	//输出所用栈的数量和一共的步数
+	void print() const;
 	//析构函数，释放内存
 	~Train();
 private:
@@ -33,12 +35,13 @@ private:
 	//检索当前车应该进入哪个栈：进入的该栈栈顶元素比车号大且差最小，若没有则进入空栈，返回栈的index
 	//                        若没有空栈则返回-1
 	int carPushedIn() const;
-	//当carPopedFrom()返回-1时调用该函数，创建一个空栈放在st的尾部
-	void createNewStack();
+	//当carPopedFrom()返回-1时调用该函数，创建一个空栈放在st的尾部,返回新建栈的index
+	int createNewStack();
 	//输出提示信息a==PUSH:把car[cur]压入st[index]内
 	//           a==POP:若index==-1则直接从car中出火车站
 	//                  否则从car[cur]中出火车站
 	void printMessage(Action a, int index) const;
+
 
 	//一元数组存放输入数据（car[0]最先入栈）
 	int *car;
