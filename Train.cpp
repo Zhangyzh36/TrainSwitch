@@ -1,4 +1,4 @@
-#include "Train.hpp"
+#include "Train.hpp" 
 #include <cctype>
 #include <cstdlib>
 #include <string>
@@ -7,25 +7,25 @@
 void instructions()
 {
 	cout << endl;
-	cout << "»¶Ó­Ê¹ÓÃ»ð³µ³µÏáÖØÅÅµ÷¶ÈÏµÍ³" << endl;
+	cout << "æ¬¢è¿Žä½¿ç”¨ç«è½¦è½¦åŽ¢é‡æŽ’è°ƒåº¦ç³»ç»Ÿ" << endl;
 	cout << "*****************************" << endl;
 	cout << endl;
-	cout << "ÇëÊäÈë" << endl;
-	cout << "  [s] ¿ªÊ¼»ò¼ÌÐøµ÷¶È" << endl;
-	cout << "  [q] ÍË³öÏµÍ³" << endl << endl;
+	cout << "è¯·è¾“å…¥" << endl;
+	cout << "  [s] å¼€å§‹æˆ–ç»§ç»­è°ƒåº¦" << endl;
+	cout << "  [q] é€€å‡ºç³»ç»Ÿ" << endl << endl;
 }
 
 char getCommand()
 {
 	string command;
 	bool waiting = true;
-	cout << "ÇëÊäÈëÖ¸Áî:~$ ";
+	cout << "è¯·è¾“å…¥æŒ‡ä»¤:~$ ";
 	while ( waiting ) {
 		getline(cin, command);
 		if (command[0] == 's' || command[0] == 'q' || command[0] == 'S' || command[0] == 'Q')
 			waiting = false; 
 		else
-			cout << "ÇëÊäÈëÕýÈ·µÄÖ¸Áî(s»òq):~$ ";
+			cout << "è¯·è¾“å…¥æ­£ç¡®çš„æŒ‡ä»¤(sæˆ–q):~$ ";
 	} 
 	return (command[0] == 's' || command[0] == 'S') ? 's' : 'q';
 }
@@ -42,10 +42,10 @@ Train::Train()
 	step = 0;
 	string sizeString;
 	
-	cout << "ÇëÊäÈë³µÏáµÄÊýÁ¿(ÕýÕûÊý):~$ ";
+	cout << "è¯·è¾“å…¥è½¦åŽ¢çš„æ•°é‡(æ­£æ•´æ•°):~$ ";
 	getline(cin, sizeString);
 	while ( !isNumber(sizeString) || atoi(sizeString.c_str()) <= 0 ) {
-		cout << "ÇëÊäÈë³µÏáµÄÊýÁ¿(ÕýÕûÊý):~$ ";
+		cout << "è¯·è¾“å…¥è½¦åŽ¢çš„æ•°é‡(æ­£æ•´æ•°):~$ ";
 		getline(cin, sizeString);
 	}
 	size = atoi(sizeString.c_str());
