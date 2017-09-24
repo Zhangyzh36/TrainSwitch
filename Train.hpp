@@ -6,60 +6,60 @@
 #include <stack>
 using namespace std;
 
-//�����ʼ��ʾ��Ϣ
+//输出初始提示信息
 void instructions();
-//s:��ʼ��������ȣ� q:�������ȳ��򣻷��������ָ� 
+//s:开始或继续调度， q:结束调度程序；返回输入的指令； 
 char getCommand();
-//����ָ������Ƿ�������� 
+//根据指令决定是否继续操作 
 bool doCommand(char command);
 
 class Train {
-	//ö���ͱ�������Ӧ��ջ��ջ
+	//枚举型变量，对应入栈出栈
 	enum Action{ PUSH, POP };
 public:
-	//���캯�������������size�Ƿ�Ϸ����Լ�car�е����ݺϷ��ԣ�1-sizeÿ��������һ�Σ�
+	//构造函数，需检查输入的size是否合法，以及car中的数据合法性（1-size每个数出现一次）
 	Train();
-	//���Ⱥ���
+	//调度函数
 	void switchTrain();
-	//�������ջ��������һ���Ĳ���
+	//输出所用栈的数量和一共的步数
 	void print() const;
-	//�����������ͷ��ڴ�
+	//析构函数，释放内存
 	~Train();
 private:
-	//�����ַ����Ƿ�Ϊ������ 
+	//测试字符串是否为正整数 
 	bool isNumber(string &num) const; 
-	//����car�е������Ƿ�Ϸ�
+	//测试car中的数据是否合法
 	bool isValidData() const;
-	//���Ե�ǰ�����Ƿ�Ϊ��һ������վ�ĳ�
+	//测试当前车辆是否为下一个出火车站的车
 	bool isCarToBeOut() const;
-	//pop�������ʾ��Ϣ���ı�carToBeOut
+	//pop并输出提示信息，改变carToBeOut
 	void popFrom(int index);
-	//push�������ʾ��Ϣ���ı�cur
+	//push并输出提示信息，改变cur
 	void pushTo(int index);
-	//�ҳ�ջ���Ƿ��г���վ�ĳ������з���ջ��index�����򷵻�-1
+	//找出栈中是否有出火车站的车，若有返回栈的index，否则返回-1
 	int carPopedFrom() const;
-	//������ǰ��Ӧ�ý����ĸ�ջ:����ĸ�ջջ��Ԫ�رȳ��Ŵ��Ҳ���С����û��������ջ������ջ��index
-	//                         ��û�п�ջ�򷵻�-1
+	//检索当前车应该进入哪个栈:进入的该栈栈顶元素比车号大且差最小，若没有则进入空栈，返回栈的index
+	//                         若没有空栈则返回-1
 	int carPushedIn() const;
-	//��carPopedFrom()����-1ʱ���øú���������һ����ջ����st��β��,�����½�ջ��index
+	//当carPopedFrom()返回-1时调用该函数，创建一个空栈放在st的尾部,返回新建栈的index
 	int createNewStack();
-	//�����ʾ��Ϣa==PUSH:��car[cur]ѹ��st[index]��
-	//            a==POP: ��index==-1��ֱ�Ӵ�car�г���վ
-	//                    �����car[cur]�г���վ
+	//输出提示信息a==PUSH:把car[cur]压入st[index]内
+	//            a==POP: 若index==-1则直接从car中出火车站
+	//                    否则从car[index]中出火车站
 	void printMessage(Action a, int index) const;
 
 
-	//һά�������������ݣ�car[0]������ջ��
+	//一维数组存放输入数据（car[0]最先入栈）
 	int *car;
-	//�����������car��size)
+	//车厢的数量（car的size)
 	int size;
-	//��ʼֵΪ0��������ǰ��car�Ĳ������±�
+	//初始值为0，代表当前对car的操作的下标
 	int cur;
-	//��һ������վ�ĳ��ĺ��룬��ʼΪ1��1����վ���Ϊ2���Դ����ƣ�ֱ��size
+	//下一个出车站的车的号码，开始为1，1出车站则变为2，以此类推，直到size
 	int carToBeOut;
-	//ͳ��һ���õĲ���
+	//统计一共用的步数
 	int step;
-	//����ջ����������ʼΪ�գ�st.size()�ɴ���ջ�ĸ�����
+	//调度栈的向量，初始为空（st.size()可代表栈的个数）
 	vector<stack<int> > st;
 };
 
