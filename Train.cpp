@@ -1,4 +1,5 @@
-#include "Train.hpp" 
+#include "Train.hpp"
+#include <cstdio>
 #include <cctype>
 #include <cstdlib>
 #include <string>
@@ -7,25 +8,28 @@
 void instructions()
 {
 	cout << endl;
-	cout << "æ¬¢è¿Žä½¿ç”¨ç«è½¦è½¦åŽ¢é‡æŽ’è°ƒåº¦ç³»ç»Ÿ" << endl;
+	cout << "»¶Ó­Ê¹ÓÃ»ð³µ³µÏáÖØÅÅµ÷¶ÈÏµÍ³" << endl;
 	cout << "*****************************" << endl;
 	cout << endl;
-	cout << "è¯·è¾“å…¥" << endl;
-	cout << "  [s] å¼€å§‹æˆ–ç»§ç»­è°ƒåº¦" << endl;
-	cout << "  [q] é€€å‡ºç³»ç»Ÿ" << endl << endl;
+	cout << "ÇëÊäÈë" << endl;
+	cout << "  [s] ¿ªÊ¼»ò¼ÌÐøµ÷¶È" << endl;
+	cout << "  [q] ÍË³öÏµÍ³" << endl << endl;
 }
 
 char getCommand()
 {
+	fflush(stdin);
 	string command;
 	bool waiting = true;
-	cout << "è¯·è¾“å…¥æŒ‡ä»¤:~$ ";
+	cout << "ÇëÊäÈëÖ¸Áî:~$ ";
 	while ( waiting ) {
 		getline(cin, command);
+		
 		if (command[0] == 's' || command[0] == 'q' || command[0] == 'S' || command[0] == 'Q')
 			waiting = false; 
 		else
-			cout << "è¯·è¾“å…¥æ­£ç¡®çš„æŒ‡ä»¤(sæˆ–q):~$ ";
+			cout << "ÇëÊäÈëÕýÈ·µÄÖ¸Áî(s»òq):~$ ";
+			
 	} 
 	return (command[0] == 's' || command[0] == 'S') ? 's' : 'q';
 }
@@ -37,18 +41,40 @@ bool doCommand(char command)
 
 Train::Train()
 {
+	car = NULL;
 	cur = 0;
 	carToBeOut = 1;
 	step = 0;
+	bool valid = false;
 	string sizeString;
+	string carString;
 	
-	cout << "è¯·è¾“å…¥è½¦åŽ¢çš„æ•°é‡(æ­£æ•´æ•°):~$ ";
+	cout << "ÇëÊäÈë³µÏáµÄÊýÁ¿(ÕýÕûÊý):~$ ";
 	getline(cin, sizeString);
 	while ( !isNumber(sizeString) || atoi(sizeString.c_str()) <= 0 ) {
-		cout << "è¯·è¾“å…¥è½¦åŽ¢çš„æ•°é‡(æ­£æ•´æ•°):~$ ";
+		cout << "ÇëÊäÈë³µÏáµÄÊýÁ¿(ÕýÕûÊý):~$ ";
 		getline(cin, sizeString);
 	}
 	size = atoi(sizeString.c_str());
+	car = new int[size];
+	
+	for (int i = 0; i < size; ++i)
+		car[i] = 0;
+	
+	while (!valid) {
+		valid = true;
+		cout << "ÇëÊäÈë³µÏáºÅÐòÁÐ(" << size << "µÄÅÅÁÐ):~$ ";
+		for (int i = 0; i < size; ++i)
+		{
+			cin >> carString;
+			if ( !isNumber(carString) ) 
+				valid = false;
+				
+			car[i] = atoi(carString.c_str());
+		}
+		valid = valid && isValidData();
+		
+	}
 	
 }
 
@@ -86,7 +112,7 @@ void Train::print() const
 
 Train::~Train()
 {
-
+	delete []car;
 }
 
 bool Train::isNumber(string &num) const
@@ -95,7 +121,7 @@ bool Train::isNumber(string &num) const
 	return regex_match(num, pattern);
 }
 
-void Train::printMessage(Action a, int stackIndex) const
+void Train::printMessage(Action a, int index) const
 {
 
 }
@@ -115,11 +141,13 @@ bool Train::isValidData() const
 		valid[car[i] - 1] = 1;
 	}
 	for (int i = 0; i < size; ++i)
+	{
 		if ( !valid[i] )
 		{
 			delete []valid;
 			return false;
 		}
+	}
 	
 	delete []valid;
 	return true;
