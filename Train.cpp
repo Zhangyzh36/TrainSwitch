@@ -1,4 +1,5 @@
-#include "Train.hpp" 
+#include "Train.hpp"
+#include <cstdio>
 #include <cctype>
 #include <cstdlib>
 #include <string>
@@ -17,15 +18,18 @@ void instructions()
 
 char getCommand()
 {
+	fflush(stdin);
 	string command;
 	bool waiting = true;
 	cout << "请输入指令:~$ ";
 	while ( waiting ) {
 		getline(cin, command);
+		
 		if (command[0] == 's' || command[0] == 'q' || command[0] == 'S' || command[0] == 'Q')
 			waiting = false; 
 		else
 			cout << "请输入正确的指令(s或q):~$ ";
+			
 	} 
 	return (command[0] == 's' || command[0] == 'S') ? 's' : 'q';
 }
@@ -37,10 +41,13 @@ bool doCommand(char command)
 
 Train::Train()
 {
+	car = NULL;
 	cur = 0;
 	carToBeOut = 1;
 	step = 0;
+	bool valid = false;
 	string sizeString;
+	string carString;
 	
 	cout << "请输入车厢的数量(正整数):~$ ";
 	getline(cin, sizeString);
@@ -49,6 +56,25 @@ Train::Train()
 		getline(cin, sizeString);
 	}
 	size = atoi(sizeString.c_str());
+	car = new int[size];
+	
+	for (int i = 0; i < size; ++i)
+		car[i] = 0;
+	
+	while (!valid) {
+		valid = true;
+		cout << "请输入车厢号序列(" << size << "的排列):~$ ";
+		for (int i = 0; i < size; ++i)
+		{
+			cin >> carString;
+			if ( !isNumber(carString) ) 
+				valid = false;
+				
+			car[i] = atoi(carString.c_str());
+		}
+		valid = valid && isValidData();
+		
+	}
 	
 }
 
@@ -81,13 +107,12 @@ void Train::switchTrain()
 
 void Train::print() const
 {
-	cout << "Totally take " << step << "steps to finish the job." << endl;
-	cout << "Totally take " << st.size() << "stacks to finish the job." << endl;
+	
 }
 
 Train::~Train()
 {
-
+	delete []car;
 }
 
 bool Train::isNumber(string &num) const
@@ -96,21 +121,9 @@ bool Train::isNumber(string &num) const
 	return regex_match(num, pattern);
 }
 
-void Train::printMessage(Action a, int stackIndex) const
+void Train::printMessage(Action a, int index) const
 {
-	switch(a)
-	{
-		case PUSH:
-			cout << "Push NO." << car[cur] << " in stack NO." << 
-			stackIndex << endl;
-			break;
-		case POP:
-			cout << "Pop NO." << st[stackIndex].top() <<  " in stack NO." << 
-			stackIndex << endl;
-			break;
-		
-	}
-		
+
 }
 
 bool Train::isValidData() const
@@ -128,11 +141,13 @@ bool Train::isValidData() const
 		valid[car[i] - 1] = 1;
 	}
 	for (int i = 0; i < size; ++i)
+	{
 		if ( !valid[i] )
 		{
 			delete []valid;
 			return false;
 		}
+	}
 	
 	delete []valid;
 	return true;
@@ -145,51 +160,25 @@ bool Train::isCarToBeOut() const
 
 void Train::popFrom(int index)
 {
-	if(index == -1) printMessage(POP,-1);
-	else
-	{
-		printMessage(POP,index);
-		st[index].pop();
-	}
-	carToBeOut++;
-	step++;
-	
+
 }
 
 void Train::pushTo(int index)
 {
-	printMessage(PUSH,index);
-	st[index].push(car[cur]);	
-	step++;
+
 }
 
 int Train::carPopedFrom() const
 {
-	for(int i = 0;i < st.size(); i++ )
-	{
-		if(st[i].top() == car[cur]) return i;
-	}
-	return -1;
+
 }
 
 int Train::carPushedIn() const
 {
-	int lpos = -1,min = 99;
-	for(int i = 0;i < st.size() ;i++)
-	{
-		if(st[i].top() < car[cur]) continue;
-		if((st[i].top() - car[cur]) < min)
-		{
-			 min = st[i].top() - car[cur];
-			 lpos = i;
-		}
-	}
-	return lpos;
+
 }
 
 int Train::createNewStack()
 {
-	stack<int> temp;
-	return st.size();	
+	
 }
-

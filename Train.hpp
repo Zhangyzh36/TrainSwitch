@@ -45,7 +45,7 @@ private:
 	int createNewStack();
 	//输出提示信息a==PUSH:把car[cur]压入st[index]内
 	//            a==POP: 若index==-1则直接从car中出火车站
-	//                    否则从car[cur]中出火车站
+	//                    否则从car[index]中出火车站
 	void printMessage(Action a, int index) const;
 
 
