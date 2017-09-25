@@ -23,6 +23,8 @@ char getCommand()
 	cout << "ÇëÊäÈëÖ¸Áî:~$ ";
 	while ( waiting ) {
 		getline(cin, command);
+		command.erase( 0, command.find_first_not_of(" ") );
+		command.erase( command.find_last_not_of(" ") + 1 );
 		
 		if (command[0] == 's' || command[0] == 'q' || command[0] == 'S' || command[0] == 'Q')
 			waiting = false; 
