@@ -1,4 +1,5 @@
-#include "Train.hpp" 
+#include "Train.hpp"
+#include <cstdio>
 #include <cctype>
 #include <cstdlib>
 #include <string>
@@ -74,7 +75,6 @@ Train::Train()
 		valid = valid && isValidData();
 		
 	}
-	cout << endl << "步骤如下：" << endl;
 	
 }
 
@@ -107,7 +107,7 @@ void Train::switchTrain()
 
 void Train::print() const
 {
-	cout << endl << "共计使用" << step << "步，" << st.size() << "条轨道" << endl << endl;		
+	
 }
 
 Train::~Train()
@@ -121,27 +121,9 @@ bool Train::isNumber(string &num) const
 	return regex_match(num, pattern);
 }
 
-void Train::printMessage(Action a, int stackIndex) const
+void Train::printMessage(Action a, int index) const
 {
-	if(stackIndex == -1)
-	{
-		cout << carToBeOut << "号直接出轨道" << endl;
-		return;
-	} 
-			
-	switch(a)
-	{
-		case PUSH:
-			cout <<  car[cur] << "号车厢进" << 
-			stackIndex+1 << "号轨道中" << endl;
-			break;
-		case POP:
-			cout <<  carToBeOut <<  "号车厢从" << 
-			stackIndex+1 << "号轨道中驶出" << endl;
-			break;
-		
-	}
-		
+
 }
 
 bool Train::isValidData() const
@@ -159,11 +141,13 @@ bool Train::isValidData() const
 		valid[car[i] - 1] = 1;
 	}
 	for (int i = 0; i < size; ++i)
+	{
 		if ( !valid[i] )
 		{
 			delete []valid;
 			return false;
 		}
+	}
 	
 	delete []valid;
 	return true;
@@ -176,58 +160,25 @@ bool Train::isCarToBeOut() const
 
 void Train::popFrom(int index)
 {
-	if(index == -1) printMessage(POP,-1);
-	else
-	{
-		printMessage(POP,index);
-		st[index].pop();
-	}
-	carToBeOut++;
-	step++;
-	
+
 }
 
 void Train::pushTo(int index)
 {
-	printMessage(PUSH,index);
-	st[index].push(car[cur]);	
-	step++;
+
 }
 
 int Train::carPopedFrom() const
 {
-	for(int i = 0;i < st.size(); i++ )
-	{
-		if(st[i].empty()) continue;
-		if(st[i].top() == carToBeOut) return i;
-	}
-	return -1;
+
 }
 
 int Train::carPushedIn() const
 {
-	int lpos = -1,min = 9999;
-	for(int i = 0;i < st.size() ;i++)
-	{
-		if(st[i].empty()) 
-		{
-			if(min == 9999) lpos = i;
-			continue;
-		}
-		if(st[i].top() < car[cur]) continue;
-		if((st[i].top() - car[cur]) < min)
-		{
-			 min = st[i].top() - car[cur];
-			 lpos = i;
-		}
-	}
-	return lpos;
+
 }
 
 int Train::createNewStack()
 {
-	stack<int> temp;
-	st.push_back(temp);
-	return st.size()-1;	
+	
 }
-
