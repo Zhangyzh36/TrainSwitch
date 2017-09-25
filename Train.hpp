@@ -10,6 +10,8 @@ using namespace std;
 void instructions();
 //s:开始或继续调度， q:结束调度程序；返回输入的指令； 
 char getCommand();
+//结束调度系统
+void end(); 
 //根据指令决定是否继续操作 
 bool doCommand(char command);
 
@@ -45,7 +47,7 @@ private:
 	int createNewStack();
 	//输出提示信息a==PUSH:把car[cur]压入st[index]内
 	//            a==POP: 若index==-1则直接从car中出火车站
-	//                    否则从car[index]中出火车站
+	//                    否则从car[cur]中出火车站
 	void printMessage(Action a, int index) const;
 
 
